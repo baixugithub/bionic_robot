@@ -1,0 +1,5 @@
+".\Objects\CDS5516.obj",
+".\Objects\Blueteeth.obj",
+".\Objects\main.obj" 
+TO ".\Objects\FFEET" 
+PRINT(".\Listings\FFEET.m51") RAMSIZE(256) 

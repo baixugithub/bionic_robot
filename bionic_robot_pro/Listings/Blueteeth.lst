@@ -1,0 +1,78 @@
+C51 COMPILER V9.54   BLUETEETH                                                             08/03/2015 15:03:15 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE BLUETEETH
+OBJECT MODULE PLACED IN .\Objects\Blueteeth.obj
+COMPILER INVOKED BY: d:\Keil_v5\C51\BIN\C51.EXE Blueteeth.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Li
+                    -stings\Blueteeth.lst) TABS(2) OBJECT(.\Objects\Blueteeth.obj)
+
+line level    source
+
+   1          #include "blueteeth.h"
+   2          uchar send2[MIN];  //需要发送的指令
+   3          uchar rece2[MIN] ; //需要接收的数据
+   4          uchar rece;        //接收单个字符
+   5          uchar key;
+   6          void Uart2_Init(void)   //串口2初始化
+   7          {
+   8   1        
+   9   1        S2CON = 0x50;   //8位数据,可变波特率
+  10   1        AUXR |= 0x04;   //定时器2时钟为Fosc,即1T
+  11   1        T2L   = TM2;    //设定定时初值
+  12   1        T2H   = TM2>>8; //设定定时初值
+  13   1        AUXR |= 0x10;   //启动定时器2
+  14   1        IE2  &= ~0x01;  //禁止串口2中断
+  15   1        P_SW2|= 0x01;   //设置串口2端口 RXD->P4.6  TXD->P4.7
+  16   1      }
+  17          
+  18          void uart2_send(uchar *s2,uchar n)  //串口2数据发送 
+  19          {
+  20   1        uchar i;
+  21   1        for(i=0;i<n;i++)
+  22   1        {
+  23   2          S2BUF = s2[i];                       // S2BUF接受/发送缓冲
+  24   2          while(!(((S2CON|0xFD)&0x02)>>1));    // 等特数据传送  
+  25   2          S2CON&=~0x02;                        // 清除数据传送标志
+  26   2        }
+  27   1      }
+  28          
+  29          void uart2_rece(uchar n)     //串口2数据发送
+  30          {
+  31   1        uchar i;
+  32   1        for(i=0;i<n;i++)
+  33   1        {
+  34   2          rece2[i]=S2BUF;                      //S2BUF接受/发送缓冲
+  35   2          while(!((S2CON|0xFE)&0x01));         // 等特数据传送  
+  36   2          S2CON&=~0x01;                        // 清除数据传接收标志
+  37   2        }
+  38   1      }
+  39          void uchar_rece()     //串口2数据接收
+  40          {
+  41   1          rece=S2BUF;                          //S2BUF接受/发送缓冲
+  42   1          while(!((S2CON|0xFE)&0x01));         // 等特数据传送  
+  43   1          S2CON&=~0x01;                        // 清除数据传接收标志
+  44   1      }
+  45          
+  46          void rece_pass()
+  47          {
+  48   1            key=S2BUF;                      //S2BUF接受/发送缓冲
+  49   1            while(!((S2CON|0xFE)&0x01));         // 等特数据传送  
+  50   1            S2CON&=~0x01;                        // 清除数据传接收标志
+  51   1      }
+  52          
+
+
+C51 COMPILER V9.54   BLUETEETH                                                             08/03/2015 15:03:15 PAGE 2   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    146    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     62       3
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

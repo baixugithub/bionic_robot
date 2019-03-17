@@ -1,0 +1,66 @@
+C51 COMPILER V9.54   MAIN                                                                  08/03/2015 15:03:35 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: d:\Keil_v5\C51\BIN\C51.EXE main.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listing
+                    -s\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "CDS5516.h"
+   2          #include "Blueteeth.h"
+   3          void main()
+   4          {
+   5   1        Uart1_Init();
+   6   1        Delayms(10);
+   7   1        Uart2_Init();
+   8   1        Delayms(10);
+   9   1        reset_servo();
+  10   1        Delayms(50);
+  11   1        while(1)
+  12   1        { 
+  13   2          Delayms(50);
+  14   2          uart2_send("Please enter a password ! ",26);
+  15   2          key=0;
+  16   2          Delayms(50);
+  17   2          rece_pass();
+  18   2          Delayms(10);
+  19   2          if(key==49)
+  20   2          {
+  21   3            uart2_send("Enter password successfully ! ",29);
+  22   3            while(1)
+  23   3            {
+  24   4              uchar_rece(); 
+  25   4              switch (rece)
+  26   4              {
+  27   5                case 'A': go_forward(); uart2_send("Go Forward ! ",13);
+  28   5                  break;
+  29   5                case 'B': turn_left();  uart2_send("Turn Left ! ",12);
+  30   5                  break;
+  31   5                case 'C': turn_right(); uart2_send("Turn Right ! ",13);
+  32   5                  break;
+  33   5                case 'D': draw_back();  uart2_send("Draw Back ! ",12);
+  34   5                  break;
+  35   5                default: uart2_send("This a wrong ! ",15);
+  36   5                  break;
+  37   5              }
+  38   4            }
+  39   3         }
+  40   2          else uart2_send("Enter the password is wrong ! ",30);
+  41   2        }
+  42   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    176    ----
+   CONSTANT SIZE    =    159    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
